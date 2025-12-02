@@ -1,0 +1,27 @@
+#!/usr/bin/env nu
+
+export def bootstrap [day: int] {
+  mkdir $"day($day)"
+  get input $day | save $"day($day)/input.txt"
+  cd $"day($day)"
+  touch part1.py part2.py test.txt
+}
+
+def "get input" [day: int] {
+  open aoc-session.yml |
+  http get $"($in.base-url)day/($day)/input" --headers ($in | select cookie)
+}
+
+export def "run day" [day: int part?: int] {
+    cd $"day($day)"
+    if $part != null {
+      python3 $"part($part).py"
+    } else {
+      glob $"part*.py" | sort | each {|f| python3 $f}
+    }
+}
+
+export def "iterate on day" [day: int part: int] {
+    let path = $"day($day)"
+    watch $path { |op| if $op == "Create" {run day $day $part }}
+}
