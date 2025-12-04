@@ -15,9 +15,9 @@ def "get input" [day: int] {
 export def "run day" [day: int part?: int] {
     cd $"day($day)"
     if $part != null {
-      python3 $"part($part).py"
+      try { python3 $"part($part).py" } catch { |err| $err.msg }
     } else {
-      glob $"part*.py" | sort | each {|f| python3 $f}
+      glob $"part*.py" | sort | each {|f| try { python3 $f } catch { |err| $err.msg }}
     }
 }
 
