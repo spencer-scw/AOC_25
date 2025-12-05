@@ -18,17 +18,15 @@ for instruction in input_lines:
     num_string = ''.join(['00', num_string])
 
     full_rotations = int(num_string[:-2])
+    total_zeros += full_rotations
+
     amount = int(num_string[-2:])
-
     started_on_zero = dial_position == 0
-
     dial_position = (dial_position + direction * amount)
 
     if not started_on_zero and (dial_position <= 0 or dial_position >= 100):
         total_zeros += 1
 
     dial_position %= 100
-
-    total_zeros += full_rotations
 
 print(total_zeros)
