@@ -1,6 +1,6 @@
 from xcover import covers
 
-def solve_with_xcover(grid_w, grid_h, unique_pieces, counts, verbose = False):
+def solve_with_xcover_counts(grid_w, grid_h, unique_pieces, counts, verbose = False):
     """
     unique_pieces: List of 6 Piece objects (the prototypes)
     counts: List of integers (how many of each piece are needed)

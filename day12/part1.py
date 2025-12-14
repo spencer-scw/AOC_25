@@ -1,7 +1,8 @@
 from math import prod
 from partition import solve_recursively
 from piece import Piece
-f = open("my.txt", 'r')
+from heuristic import HeuristicPacker
+f = open("input.txt", 'r')
 
 pieces = []
 grids = []
@@ -32,8 +33,29 @@ for line in f.readlines():
 
 ##
 total = 0
-for grid in grids:
-    if solve_recursively(*grid.get('dimensions'), pieces, grid.get('counts')):
+for i, grid in enumerate(grids):
+    width, height = grid.get('dimensions')
+    counts = grid.get('counts')
+    grid_area = width * height
+    piece_area = sum(p.area * c for p, c in zip(pieces, counts))
+    ratio = piece_area / grid_area
+
+    print(f"{i} row, ratio is {ratio:.2f}")
+    if ratio >= 0.99:
+        ...
+      # print("This grid will never work, the pieces are too large.")
+    else: # ratio < 0.85:
+        # print("Checking shortcut...")
+        # heur = HeuristicPacker(width, height, counts)
+        # if heur.can_fit():
+        #     # print('Confirmed via heuristic, skipping solver...')
         total += 1
+    # else:
+    #     print("Attempting recursive decomposition...")
+    #     if solve_recursively(*grid.get('dimensions'), pieces, grid.get('counts')):
+    #         print("Confirmed by recursive decomposition")
+    #         total += 1
+    #     else:
+    #         print("Verified no-fit by recursive decomposition.")
 
 print(f"Final total: {total}")
